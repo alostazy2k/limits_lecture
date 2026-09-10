@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limits of Functions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0: #0B0F1E;
+    --bg-1: #0F1424;
+    --panel: rgba(255,255,255,0.045);
+    --panel-border: rgba(255,255,255,0.09);
+    --teal: #2DD4BF;
+    --gold: #F5B942;
+    --text-hi: #EDEFF7;
+    --text-lo: #9BA1BC;
+    --rule: rgba(255,255,255,0.08);
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(45,212,191,0.10), transparent 60%),
+      radial-gradient(ellipse 900px 500px at 90% 10%, rgba(245,185,66,0.08), transparent 55%),
+      var(--bg-0);
+    color: var(--text-hi);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 6vw 24px 10vw;
+  }
+
+  header.hero{
+    padding-bottom: 3.2rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 3.6rem;
+  }
+
+  .kicker-line{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    margin-bottom: 1.6rem;
+  }
+  .kicker-line .dot{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+  }
+  .kicker-line span{
+    font-size: 0.85rem;
+    color: var(--text-lo);
+    letter-spacing: 0.01em;
+  }
+
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.08;
+    margin: 0 0 1.3rem;
+    max-width: 15ch;
+  }
+  h1 em{
+    font-style: italic;
+    font-weight: 400;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .lede{
+    font-size: 1.08rem;
+    line-height: 1.7;
+    color: var(--text-lo);
+    max-width: 62ch;
+  }
+  .lede code{
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-hi);
+  }
+
+  section.part{
+    margin-bottom: 5rem;
+  }
+  section.part:last-of-type{
+    margin-bottom: 2rem;
+  }
+
+  .part-head{
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+  }
+  .part-index{
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    color: var(--text-lo);
+    white-space: nowrap;
+    padding-top: 0.15rem;
+  }
+  .part-title{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.65rem;
+    margin: 0;
+  }
+
+  .part-desc{
+    color: var(--text-lo);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 68ch;
+    margin: 0 0 1.4rem;
+  }
+  .part-desc .tag{
+    display:inline-block;
+    padding: 0.1rem 0.55rem;
+    border-radius: 5px;
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .tag.right{ background: rgba(45,212,191,0.14); color: var(--teal); }
+  .tag.left{ background: rgba(245,185,66,0.14); color: var(--gold); }
+
+  .video-frame{
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 10px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  video{
+    display:block;
+    width: 100%;
+    border-radius: 8px;
+    background: #000;
+  }
+
+  .missing-note{
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: var(--text-lo);
+    font-size: 0.92rem;
+  }
+
+  footer{
+    margin-top: 4rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--rule);
+    color: var(--text-lo);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 600px){
+    .wrap{ padding: 14vw 18px 16vw; }
+    .part-title{ font-size: 1.35rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker-line">
+      <span class="dot"></span>
+      <span>Real Functions — Limits</span>
+    </div>
+    <h1>Understanding <em>limits</em> through three functions</h1>
+    <p class="lede">
+      A limit describes what a function approaches near a point — not necessarily what happens
+      at the point itself. The three cases below show why the limit can exist, why it can fail
+      to exist, and a subtler way it can fail: a function that stays bounded yet never settles
+      as <code>x → 2</code>.
+    </p>
+  </header>
+
+  <section class="part">
+    <div class="part-head">
+      <span class="part-index">01</span>
+      <h2 class="part-title">A continuous function</h2>
+    </div>
+    <p class="part-desc">
+      For <code>f(x) = x² − x + 1</code>, watch a point travel along the curve toward
+      <code>x = 2</code> from the <span class="tag right">right</span> and then from the
+      <span class="tag left">left</span>. Both approaches land on the same value, which is
+      exactly why the two-sided limit exists.
+    </p>
+    <div class="video-frame">
+      <video controls preload="metadata" poster="">
+        <source src="videos/continuous_limit.mp4" type="video/mp4">
+        <div class="missing-note">continuous_limit.mp4 not found in /videos</div>
+      </video>
+    </div>
+  </section>
+
+  <section class="part">
+    <div class="part-head">
+      <span class="part-index">02</span>
+      <h2 class="part-title">A jump discontinuity</h2>
+    </div>
+    <p class="part-desc">
+      Now the curve is split at <code>x = 2</code>: <code>f(x) = x+1</code> before it,
+      <code>f(x) = x−1</code> from it onward. The <span class="tag right">right</span>-hand
+      approach and the <span class="tag left">left</span>-hand approach head toward different
+      values — so no single number describes what the function does near that point.
+    </p>
+    <div class="video-frame">
+      <video controls preload="metadata" poster="">
+        <source src="videos/jump_discontinuity.mp4" type="video/mp4">
+        <div class="missing-note">jump_discontinuity.mp4 not found in /videos</div>
+      </video>
+    </div>
+  </section>
+
+  <section class="part">
+    <div class="part-head">
+      <span class="part-index">03</span>
+      <h2 class="part-title">Oscillation without decay</h2>
+    </div>
+    <p class="part-desc">
+      <code>f(x) = sin(1/(x−2))</code> stays trapped between −1 and 1, but as <code>x</code>
+      approaches 2 it oscillates faster and faster without ever calming down. Zooming in only
+      reveals more oscillation, never convergence — a case where boundedness alone isn't enough
+      for a limit to exist.
+    </p>
+    <div class="video-frame">
+      <video controls preload="metadata" poster="">
+        <source src="videos/oscillating_limit.mp4" type="video/mp4">
+        <div class="missing-note">oscillating_limit.mp4 not found in /videos</div>
+      </video>
+    </div>
+  </section>
+
+  <footer>
+    Real Functions — trial lesson format
+  </footer>
+
+</div>
+
+</body>
+</html>
